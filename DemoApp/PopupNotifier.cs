@@ -269,7 +269,7 @@ namespace DemoApp
             ImagePadding = new Padding(0);
             HeaderHeight = 9;
             ShowCloseButton = true;
-            ShowOptionsButton = false;
+            ShowOptionsButton = true;
             Delay = 3000;
             AnimationInterval = 10;
             AnimationDuration = 1000;

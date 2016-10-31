@@ -184,7 +184,7 @@ namespace DemoApp
                 {
                     return new RectangleF(
                         Parent.ImagePadding.Left + Parent.ImageSize.Width + Parent.ImagePadding.Right + Parent.ContentPadding.Left,
-                        Parent.HeaderHeight + Parent.TitlePadding.Top + heightOfTitle + Parent.TitlePadding.Bottom + Parent.ContentPadding.Top,
+                        heightOfTitle + Parent.TitlePadding.Bottom + Parent.ContentPadding.Top,
                         this.Width - Parent.ImagePadding.Left - Parent.ImageSize.Width - Parent.ImagePadding.Right - Parent.ContentPadding.Left - Parent.ContentPadding.Right - 16 - 5,
                         this.Height - Parent.HeaderHeight - Parent.TitlePadding.Top - heightOfTitle - Parent.TitlePadding.Bottom - Parent.ContentPadding.Top - Parent.ContentPadding.Bottom - 1);
                 }
@@ -192,7 +192,7 @@ namespace DemoApp
                 {
                     return new RectangleF(
                         25 + Parent.ContentPadding.Left,
-                        Parent.HeaderHeight + Parent.TitlePadding.Top + heightOfTitle + Parent.TitlePadding.Bottom + Parent.ContentPadding.Top,
+                        heightOfTitle + Parent.TitlePadding.Bottom + Parent.ContentPadding.Top,
                         this.Width - Parent.ContentPadding.Left - Parent.ContentPadding.Right - 16 - 5,
                         this.Height - Parent.HeaderHeight - Parent.TitlePadding.Top - heightOfTitle - Parent.TitlePadding.Bottom - Parent.ContentPadding.Top - Parent.ContentPadding.Bottom - 1);
                 }
@@ -337,10 +337,7 @@ namespace DemoApp
             e.Graphics.FillRectangle(brushBody, rcBody);
             e.Graphics.FillRectangle(brushHeader, rcHeader);
             e.Graphics.DrawRectangle(penBorder, rcForm);
-            if (Parent.ShowGrip)
-            {
-                e.Graphics.DrawImage(Properties.Resources.Grip, 1, 1, 18, 18);
-            }
+           
             if (Parent.ShowCloseButton)
             {
                 if (mouseOnClose)
@@ -348,8 +345,8 @@ namespace DemoApp
                     e.Graphics.FillRectangle(brushButtonHover, RectClose);
                     e.Graphics.DrawRectangle(penButtonBorder, RectClose);
                 }
-                e.Graphics.DrawLine(penContent, RectClose.Left + 2, RectClose.Top + 2, RectClose.Right - 2, RectClose.Bottom - 2);
-                e.Graphics.DrawLine(penContent, RectClose.Left + 2, RectClose.Bottom - 2, RectClose.Right - 2, RectClose.Top + 2);
+                e.Graphics.DrawLine(penContent, RectClose.Left + 4, RectClose.Top + 4, RectClose.Right - 4, RectClose.Bottom - 4);
+                e.Graphics.DrawLine(penContent, RectClose.Left + 4, RectClose.Bottom - 4, RectClose.Right - 4, RectClose.Top + 4);
             }
             if (Parent.ShowOptionsButton)
             {
@@ -358,7 +355,7 @@ namespace DemoApp
                     e.Graphics.FillRectangle(brushButtonHover, RectOptions);
                     e.Graphics.DrawRectangle(penButtonBorder, RectOptions);
                 }
-                Rectangle myRectangle = new Rectangle(RectOptions.Left + 3, RectOptions.Top + 3, 13, 13);
+                Rectangle myRectangle = new Rectangle(RectOptions.Left + 4, RectOptions.Top + 4, 11, 11);
 
                 e.Graphics.DrawRectangle(penContent, myRectangle);
                 //e.Graphics.FillPolygon(brushForeColor, new Point[] { new Point(RectOptions.Left + 3, RectOptions.Top + 2), new Point(RectOptions.Right - 3, RectOptions.Top + 2), new Point(RectOptions.Right - 9, RectOptions.Top + 8) });
@@ -367,7 +364,7 @@ namespace DemoApp
             // draw icon
             if (Parent.Image != null)
             {
-                e.Graphics.DrawImage(Parent.Image, Parent.ImagePadding.Left + 1, Parent.HeaderHeight + Parent.ImagePadding.Top, Parent.ImageSize.Width, Parent.ImageSize.Height);
+                e.Graphics.DrawImage(Parent.Image, Parent.ImagePadding.Left + 1, 1 + Parent.ImagePadding.Top, Parent.ImageSize.Width, Parent.ImageSize.Height);
             }
 
             // calculate height of title
@@ -378,12 +375,8 @@ namespace DemoApp
                 titleX += Parent.ImagePadding.Left + Parent.ImageSize.Width + Parent.ImagePadding.Right - 25;
             }
 
-            // draw name
-            Font fontName = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            e.Graphics.DrawString(Parent.ProgramName, fontName, brushTitle, 19, 2);
-
             // draw title
-            e.Graphics.DrawString(Parent.TitleText, Parent.TitleFont, brushTitle, titleX, Parent.HeaderHeight + Parent.TitlePadding.Top);
+            e.Graphics.DrawString(Parent.TitleText, Parent.TitleFont, brushTitle, titleX, Parent.TitlePadding.Top);
   
             // draw content text, optionally with a bold part
             this.Cursor = mouseOnLink ? Cursors.Hand : Cursors.Default;

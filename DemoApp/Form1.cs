@@ -25,7 +25,7 @@ namespace DemoApp
             // 
             this.notifyIcon1.Icon = Properties.Resources.Icon;
         }
-
+        private AppSetting appSetting = new AppSetting();
         private List<EntityVocal> lstVocal = new List<EntityVocal>();
         private int idx = -1;
         Random rnd = new Random();
@@ -33,11 +33,17 @@ namespace DemoApp
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            string _FilePath4 = AppDomain.CurrentDomain.BaseDirectory + @"\" + getStringAppSetting("dict", "dictVoval.txt");
+            LoadSetting();
+            GetSetting();
+            if(appSetting == null)
+            {
+                DoCloseApplication();
+            }
+
             try
             {
                 string jsonContent = string.Empty;
-                using (var file = new StreamReader(_FilePath4))
+                using (var file = new StreamReader(appSetting.dict))
                 {
                     jsonContent = file.ReadToEnd();
                 }
@@ -48,7 +54,7 @@ namespace DemoApp
                     throw new Exception();
 
                 Shuffle(ref lstVocal);
-                timer1.Interval = getIntAppSetting("delay", 0) * 1000;
+                timer1.Interval = appSetting.repeat;
                 timer1.Start();
 
                 notifyIcon1.Visible = true;
@@ -58,23 +64,57 @@ namespace DemoApp
             catch (Exception)
             {
                 timer1.Enabled = false;
-                label1.Text = "Can not read the dictionary!";
-                label1.ForeColor = Color.Red;
+                showPopup("Oops, something wrong!", "Can not read the dictionary!");
             }
         }
 
-        private void btnShow_Click(object sender, EventArgs e)
-        {
-            showPopup(txtTitle.Text, txtText.Text);
-        }
-
-        private void btnExit_Click(object sender, EventArgs e)
-        {
-            DoCloseApplication();
-        }
-
         private int TryGetVocal = 0;
-
+        private void LoadSetting()
+        {
+            appSetting.dict = getStringAppSetting("dict", "dictVoval.txt");
+            if (appSetting.dict.Split('\\').Length < 2)
+                appSetting.dict = AppDomain.CurrentDomain.BaseDirectory + @"\" + getStringAppSetting("dict", "dictVoval.txt");
+            appSetting.delay = getIntAppSetting("delay", 3000);
+            appSetting.repeat = getIntAppSetting("repeat", 5000);
+            appSetting.memorized = getIntAppSetting("memorized", 20);
+            appSetting.aInterval = getIntAppSetting("aInterval", 10);
+            appSetting.aDuration = getIntAppSetting("aDuration", 500);
+        }
+        private void GetSetting()
+        {
+            if (appSetting == null)
+                return;
+            txtTitle.Text = appSetting.dict;
+            txtDelay.Value = appSetting.delay;
+            txtRepeat.Value = appSetting.repeat;
+            txtTimeLearnt.Value = appSetting.memorized;
+            txtInterval.Value = appSetting.aInterval;
+            txtAnimationDuration.Value = appSetting.aDuration;           
+        }
+        private void SetSetting()
+        {
+            if (appSetting == null)
+                return;
+             appSetting.dict = txtTitle.Text;
+             appSetting.delay = (int)txtDelay.Value;
+             appSetting.repeat = (int)txtRepeat.Value;
+             appSetting.memorized = (int)txtTimeLearnt.Value;
+             appSetting.aInterval = (int)txtInterval.Value;
+             appSetting.aDuration = (int)txtAnimationDuration.Value;
+             System.Diagnostics.Debug.WriteLine("SetSetting." + appSetting.dict);
+        }
+        private void SaveSetting()
+        {
+            System.Configuration.Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            config.AppSettings.Settings["dict"].Value = appSetting.dict;
+            config.AppSettings.Settings["delay"].Value = appSetting.delay.ToString();
+            config.AppSettings.Settings["repeat"].Value = appSetting.repeat.ToString();
+            config.AppSettings.Settings["memorized"].Value = appSetting.memorized.ToString();
+            config.AppSettings.Settings["aInterval"].Value = appSetting.aInterval.ToString();
+            config.AppSettings.Settings["aDuration"].Value = appSetting.aDuration.ToString();
+            config.Save(ConfigurationSaveMode.Modified);
+            ConfigurationManager.RefreshSection("appSettings");
+        }
         private void timer1_Tick(object sender, EventArgs e)
         {
             System.Diagnostics.Debug.WriteLine("IsMouseEnter." + popupNotifier1.IsMouseEnter.ToString());
@@ -107,14 +147,12 @@ namespace DemoApp
                     {
                         curVocal = rnd.Next(iterations);
                         showPopup(lstVocal[curVocal].v, lstVocal[curVocal].m);
-                        label1.Text = lstVocal[curVocal].v;
                     }
                 }
                 else
                 {
                     curVocal = rnd.Next(iterations);
                     showPopup(lstVocal[curVocal].v, lstVocal[curVocal].m);
-                    label1.Text = lstVocal[curVocal].v;
                     TryGetVocal++;
                 }
             }
@@ -129,29 +167,18 @@ namespace DemoApp
 
         private void showPopup(string title, string content)
         {
+            if (appSetting == null)
+                return;
             popupNotifier1.ProgramName = "Learning How to Learn";
             popupNotifier1.TitleText = title;
             popupNotifier1.ContentText = content;
 
-            popupNotifier1.ShowCloseButton = chkClose.Checked;
-            popupNotifier1.ShowOptionsButton = chkMenu.Checked;
-            popupNotifier1.ShowGrip = chkGrip.Checked;
-            popupNotifier1.Delay = int.Parse(txtDelay.Text);
-            popupNotifier1.AnimationInterval = int.Parse(txtInterval.Text);
-            popupNotifier1.AnimationDuration = int.Parse(txtAnimationDuration.Text);
-            popupNotifier1.TitlePadding = new Padding(int.Parse(txtPaddingTitle.Text));
-            popupNotifier1.ContentPadding = new Padding(int.Parse(txtPaddingContent.Text));
-            popupNotifier1.ImagePadding = new Padding(int.Parse(txtPaddingIcon.Text));
-            popupNotifier1.Scroll = chkScroll.Checked;
+          
+            popupNotifier1.Delay = appSetting.delay;
+            popupNotifier1.AnimationInterval = appSetting.aInterval;
+            popupNotifier1.AnimationDuration = appSetting.aDuration;
 
-            if (chkIcon.Checked)
-            {
-                popupNotifier1.Image = Properties.Resources._157_GetPermission_48x48_72;
-            }
-            else
-            {
-                popupNotifier1.Image = null;
-            }
+            popupNotifier1.Image = Properties.Resources._157_GetPermission_48x48_72;
             popupNotifier1.Popup();
         }
 
@@ -182,6 +209,15 @@ namespace DemoApp
             }
         }
 
+        public class AppSetting
+        {
+            public string dict { get; set; }
+            public int repeat { get; set; }
+            public int memorized { get; set; }
+            public int delay { get; set; }
+            public int aInterval { get; set; }
+            public int aDuration { get; set; }
+        }
         public class EntityVocal
         {
             public int p { get; set; }
@@ -234,6 +270,7 @@ namespace DemoApp
                 MessageBox.Show("Chúc mừng! Hôm nay bạn đã học " + totalMemorizedToday + " từ.", "Thành quả hôm nay", MessageBoxButtons.OK, MessageBoxIcon.Information);
             else
                 MessageBox.Show("Hôm nay bạn không học được từ nào sao?", "Thành quả hôm nay", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            SaveSetting();
         }
         private void SettingsToolStripMenuItem_Click(object sender, System.EventArgs e)
         {
@@ -248,6 +285,7 @@ namespace DemoApp
         private void DoCloseApplication()
         {
             this.Close();
+            SaveSetting();
             Application.Exit();
         }
 
@@ -269,11 +307,32 @@ namespace DemoApp
                 return;
 
             //Increase your memorized
-            int totalMemorized = getIntAppSetting("memorized", 20);
-            lstVocal[idx].p += (100 / totalMemorized);
+            lstVocal[idx].p += (100 / appSetting.memorized);
             totalMemorizedToday++;
             System.Diagnostics.Debug.WriteLine("LearntToolStripMenuItem_Click." + totalMemorizedToday.ToString());
             learntToolStripMenuItem.Enabled = false;
+        }
+
+        private void txtTitle_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog1 = new OpenFileDialog();
+            openFileDialog1.Filter = "Dictionary Files|*.txt";
+            openFileDialog1.Title = "Select a Dictionary File";
+
+            // Show the Dialog.
+            // If the user clicked OK in the dialog and
+            // a .CUR file was selected, open it.
+            if (openFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                // Assign the cursor in the Stream to the Form's Cursor property.
+                
+                txtTitle.Text = openFileDialog1.FileName;
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            SetSetting();
         }
     }
 }
