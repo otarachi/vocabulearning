@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DemoApp.Properties {
+namespace Vocalbulearning.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace DemoApp.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("DemoApp.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Vocalbulearning.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -66,16 +66,6 @@ namespace DemoApp.Properties {
         internal static System.Drawing.Bitmap _157_GetPermission_48x48_72 {
             get {
                 object obj = ResourceManager.GetObject("_157_GetPermission_48x48_72", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Grip {
-            get {
-                object obj = ResourceManager.GetObject("Grip", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

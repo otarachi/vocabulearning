@@ -1,18 +1,9 @@
-﻿/*
- *	Created/modified in 2011 by Simon Baer
- *	
- *  Based on the Code Project article by Nicolas Wälti:
- *  http://www.codeproject.com/KB/cpp/PopupNotifier.aspx
- * 
- *  Licensed under the Code Project Open License (CPOL).
- */
-
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Windows.Forms;
 using System.Drawing;
 
-namespace DemoApp
+namespace Vocalbulearning
 {
     /// <summary>
     /// Non-visual component to show a notification window in the right lower
@@ -60,10 +51,6 @@ namespace DemoApp
 
         #region Properties
 
-        [Category("Header"), DefaultValue(typeof(Color), "ControlDark")]
-        [Description("Color of the window header.")]
-        public Color HeaderColor { get; set; }
-
         [Category("Appearance"), DefaultValue(typeof(Color), "Control")]
         [Description("Color of the window background.")]
         public Color BodyColor { get; set; }
@@ -87,15 +74,7 @@ namespace DemoApp
         [Category("Buttons"), DefaultValue(typeof(Color), "Highlight")]
         [Description("Background color of the close and options buttons when the mouse is over them.")]
         public Color ButtonHoverColor { get; set; }
-
-        [Category("Content"), DefaultValue(typeof(Color), "HotTrack")]
-        [Description("Color of the content text when the mouse is hovering over it.")]
-        public Color ContentHoverColor { get; set; }
-
-        [Category("Appearance"), DefaultValue(50)]
-        [Description("Gradient of window background color.")]
-        public int GradientPower { get; set; }
-
+                
         [Category("Content")]
         [Description("Font of the content text.")]
         public Font ContentFont { get; set; }
@@ -144,15 +123,7 @@ namespace DemoApp
         [Category("Image")]
         [Description("Icon image to display.")]
         public Image Image { get; set; }
-
-        [Category("Header"), DefaultValue(true)]
-        [Description("Whether to show a 'grip' image within the window header.")]
-        public bool ShowGrip { get; set; }
-
-        [Category("Behavior"), DefaultValue(true)]
-        [Description("Whether to scroll the window or only fade it.")]
-        public bool Scroll { get; set; }
-
+        
         [Category("Content")]
         [Description("Content text to display.")]
         public string ContentText { get; set; }
@@ -160,11 +131,7 @@ namespace DemoApp
         [Category("Title")]
         [Description("Title text to display.")]
         public string TitleText { get; set; }
-
-        [Category("ProgramName")]
-        [Description("Name of Program.")]
-        public string ProgramName { get; set; }
-
+        
         [Category("Title")]
         [Description("Padding of title text.")]
         public Padding TitlePadding { get; set; }
@@ -207,24 +174,12 @@ namespace DemoApp
             return (!ImagePadding.Equals(Padding.Empty));
         }
 
-        [Category("Header"), DefaultValue(9)]
-        [Description("Height of window header.")]
-        public int HeaderHeight { get; set; }
-
-        [Category("Buttons"), DefaultValue(true)]
-        [Description("Whether to show the close button.")]
-        public bool ShowCloseButton { get; set; }
-
-        [Category("Buttons"), DefaultValue(false)]
-        [Description("Whether to show the options button.")]
-        public bool ShowOptionsButton { get; set; }
-
         [Category("Behavior")]
         [Description("Context menu to open when clicking on the options button.")]
         public ContextMenuStrip OptionsMenu { get; set; }
         
-        [Category("Behavior")]
-        [Description("Time in milliseconds the window display next message.")]
+        [Category("Behavior"), DefaultValue(false)]
+        [Description("Check is mouse enter message.")]
         public bool IsMouseEnter { get; set; }
 
 
@@ -252,24 +207,17 @@ namespace DemoApp
         public PopupNotifier()
         {
             // set default values
-            HeaderColor = SystemColors.ControlDark;
             BodyColor = SystemColors.Control;
             TitleColor = SystemColors.ControlText;
             ContentColor = SystemColors.ControlText;
             BorderColor = SystemColors.WindowFrame;
             ButtonBorderColor = SystemColors.WindowFrame;
             ButtonHoverColor = SystemColors.Control;
-            ContentHoverColor = SystemColors.HotTrack;
             ContentFont = SystemFonts.DialogFont;
             TitleFont = SystemFonts.DialogFont;
-            ShowGrip = true;
-            Scroll = true;
             TitlePadding = new Padding(0);
             ContentPadding = new Padding(0);
             ImagePadding = new Padding(0);
-            HeaderHeight = 9;
-            ShowCloseButton = true;
-            ShowOptionsButton = true;
             Delay = 3000;
             AnimationInterval = 10;
             AnimationDuration = 1000;
@@ -283,7 +231,6 @@ namespace DemoApp
             frmPopup.MouseEnter += new EventHandler(frmPopup_MouseEnter);
             frmPopup.MouseLeave += new EventHandler(frmPopup_MouseLeave);
             frmPopup.CloseClick += new EventHandler(frmPopup_CloseClick);
-            frmPopup.LinkClick += new EventHandler(frmPopup_LinkClick);
             frmPopup.ContextMenuOpened += new EventHandler(frmPopup_ContextMenuOpened);
             frmPopup.ContextMenuClosed += new EventHandler(frmPopup_ContextMenuClosed);            
             frmPopup.VisibleChanged += new EventHandler(frmPopup_VisibleChanged); 
@@ -300,22 +247,45 @@ namespace DemoApp
         /// If the window is currently disappearing, it is shown again.
         /// </summary>
         public void Popup()
-        {
+        {            
+
             if (!disposed)
             {
-                if (!frmPopup.Visible)
+                frmPopup.Size = Size;
+                int widthOfContent;
+                if (Image != null)
                 {
-                    frmPopup.Size = Size;
-                    if (Scroll)
-                    {
-                        posStart = Screen.PrimaryScreen.WorkingArea.Bottom;
-                        posStop = Screen.PrimaryScreen.WorkingArea.Bottom - frmPopup.Height;
-                    }
-                    else
-                    {
-                        posStart = Screen.PrimaryScreen.WorkingArea.Bottom - frmPopup.Height;
-                        posStop = Screen.PrimaryScreen.WorkingArea.Bottom - frmPopup.Height;
-                    }
+                    widthOfContent = frmPopup.Width - ImagePadding.Left - ImageSize.Width - ImagePadding.Right - ContentPadding.Left - ContentPadding.Right - 16 - 5;
+                }
+                else
+                {
+                    widthOfContent = frmPopup.Width - ContentPadding.Left - ContentPadding.Right - 16 - 5;
+                }
+
+                int heightOfContent;
+                using (Graphics g = Graphics.FromHwnd(IntPtr.Zero))
+                {
+                    heightOfContent = (int)g.MeasureString(ContentText, ContentFont, widthOfContent).Height;
+                }
+
+                int heightOfTitle;
+                using (Graphics g = Graphics.FromHwnd(IntPtr.Zero))
+                {
+                    heightOfTitle = (int)g.MeasureString("A", TitleFont).Height;
+                }
+
+                int curHeightOfContent = frmPopup.Height - TitlePadding.Top - heightOfTitle - TitlePadding.Bottom - ContentPadding.Top - ContentPadding.Bottom - 1;
+
+                if (heightOfContent > curHeightOfContent)
+                {
+                    frmPopup.Height += heightOfContent - curHeightOfContent;
+                }
+
+                posStart = Screen.PrimaryScreen.WorkingArea.Bottom - frmPopup.Height;
+                posStop = Screen.PrimaryScreen.WorkingArea.Bottom - frmPopup.Height;
+
+                if (!frmPopup.Visible)
+                {       
                     opacityStart = 0;
                     opacityStop = 1;
 
@@ -334,18 +304,7 @@ namespace DemoApp
                 else
                 {
                     if (!isAppearing)
-                    {
-                        frmPopup.Size = Size;
-                        if (Scroll)
-                        {
-                            posStart = frmPopup.Top;
-                            posStop = Screen.PrimaryScreen.WorkingArea.Bottom - frmPopup.Height;
-                        }
-                        else
-                        {
-                            posStart = Screen.PrimaryScreen.WorkingArea.Bottom - frmPopup.Height;
-                            posStop = Screen.PrimaryScreen.WorkingArea.Bottom - frmPopup.Height;
-                        }
+                    {                 
                         opacityStart = frmPopup.Opacity;
                         opacityStop = 1;
                         isAppearing = true;
@@ -401,19 +360,6 @@ namespace DemoApp
             tmrWait.Stop();
             System.Diagnostics.Debug.WriteLine("Wait timer stopped.");
             IsMouseEnter = true;
-        }
-
-        /// <summary>
-        /// The text has been clicked. Raise the 'Click' event.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void frmPopup_LinkClick(object sender, EventArgs e)
-        {
-            if (Click != null)
-            {
-                Click(this, EventArgs.Empty);
-            }
         }
 
         /// <summary>
@@ -485,17 +431,9 @@ namespace DemoApp
                 System.Diagnostics.Debug.WriteLine("Animation stopped.");
 
                 if (isAppearing)
-                {
-                    if (Scroll)
-                    {
-                        posStart = Screen.PrimaryScreen.WorkingArea.Bottom - frmPopup.Height;
-                        posStop = Screen.PrimaryScreen.WorkingArea.Bottom;
-                    }
-                    else
-                    {
-                        posStart = Screen.PrimaryScreen.WorkingArea.Bottom - frmPopup.Height;
-                        posStop = Screen.PrimaryScreen.WorkingArea.Bottom - frmPopup.Height;
-                    }
+                {                    
+                    posStart = Screen.PrimaryScreen.WorkingArea.Bottom - frmPopup.Height;
+                    posStop = Screen.PrimaryScreen.WorkingArea.Bottom - frmPopup.Height;
                     opacityStart = 1;
                     opacityStop = 0;
 

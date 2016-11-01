@@ -1,18 +1,9 @@
-﻿/*
- *	Created/modified in 2011 by Simon Baer
- *	
- *  Based on the Code Project article by Nicolas Wälti:
- *  http://www.codeproject.com/KB/cpp/PopupNotifier.aspx
- * 
- *  Licensed under the Code Project Open License (CPOL).
- */
-
-using System;
+﻿using System;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
-namespace DemoApp
+namespace Vocalbulearning
 {
     /// <summary>
     /// This is the form of the actual notification window.
@@ -42,10 +33,6 @@ namespace DemoApp
                 return cp;
             }
         }
-        /// <summary>
-        /// Event that is raised when the text is clicked.
-        /// </summary>
-        public event EventHandler LinkClick;
 
         /// <summary>
         /// Event that is raised when the notification window is manually closed.
@@ -56,24 +43,21 @@ namespace DemoApp
         internal event EventHandler ContextMenuClosed;
 
         private bool mouseOnClose = false;
-        private bool mouseOnLink = false;
         private bool mouseOnOptions = false;
         private int heightOfTitle;
+        private int widthOfContent;
 
         #region GDI objects
 
         private bool gdiInitialized = false;
         private Rectangle rcBody;
-        private Rectangle rcHeader;
         private Rectangle rcForm;
         private LinearGradientBrush brushBody;
-        private LinearGradientBrush brushHeader;
         private Brush brushButtonHover;
         private Pen penButtonBorder;
         private Pen penContent;
         private Pen penBorder;
         private Brush brushForeColor;
-        private Brush brushLinkHover;
         private Brush brushContent;
         private Brush brushTitle;
 
@@ -107,7 +91,6 @@ namespace DemoApp
             if (this.Visible)
             {
                 mouseOnClose = false;
-                mouseOnLink = false;
                 mouseOnOptions = false;
             }
         }
@@ -152,27 +135,7 @@ namespace DemoApp
         {
             return (input - ded > 0) ? input - ded : 0;
         }
-
-        /// <summary>
-        /// Returns a color which is darker than the given color.
-        /// </summary>
-        /// <param name="color">Color</param>
-        /// <returns>darker color</returns>
-        private Color GetDarkerColor(Color color)
-        {
-            return System.Drawing.Color.FromArgb(255, DedValueMin0((int)color.R, Parent.GradientPower), DedValueMin0((int)color.G, Parent.GradientPower), DedValueMin0((int)color.B, Parent.GradientPower));
-        }
-
-        /// <summary>
-        /// Returns a color which is lighter than the given color.
-        /// </summary>
-        /// <param name="color">Color</param>
-        /// <returns>lighter color</returns>
-        private Color GetLighterColor(Color color)
-        {
-            return System.Drawing.Color.FromArgb(255, AddValueMax255((int)color.R, Parent.GradientPower), AddValueMax255((int)color.G, Parent.GradientPower), AddValueMax255((int)color.B, Parent.GradientPower));
-        }
-
+               
         /// <summary>
         /// Gets the rectangle of the content text.
         /// </summary>
@@ -182,19 +145,19 @@ namespace DemoApp
             {
                 if (Parent.Image != null)
                 {
+                    widthOfContent = this.Width - Parent.ImagePadding.Left - Parent.ImageSize.Width - Parent.ImagePadding.Right - Parent.ContentPadding.Left - Parent.ContentPadding.Right - 16 - 5;
                     return new RectangleF(
                         Parent.ImagePadding.Left + Parent.ImageSize.Width + Parent.ImagePadding.Right + Parent.ContentPadding.Left,
                         heightOfTitle + Parent.TitlePadding.Bottom + Parent.ContentPadding.Top,
-                        this.Width - Parent.ImagePadding.Left - Parent.ImageSize.Width - Parent.ImagePadding.Right - Parent.ContentPadding.Left - Parent.ContentPadding.Right - 16 - 5,
-                        this.Height - Parent.HeaderHeight - Parent.TitlePadding.Top - heightOfTitle - Parent.TitlePadding.Bottom - Parent.ContentPadding.Top - Parent.ContentPadding.Bottom - 1);
+                        widthOfContent, this.Height - Parent.TitlePadding.Top - heightOfTitle - Parent.TitlePadding.Bottom - Parent.ContentPadding.Top - Parent.ContentPadding.Bottom - 1);
                 }
                 else
                 {
+                    widthOfContent = this.Width - Parent.ContentPadding.Left - Parent.ContentPadding.Right - 16 - 5;
                     return new RectangleF(
                         25 + Parent.ContentPadding.Left,
                         heightOfTitle + Parent.TitlePadding.Bottom + Parent.ContentPadding.Top,
-                        this.Width - Parent.ContentPadding.Left - Parent.ContentPadding.Right - 16 - 5,
-                        this.Height - Parent.HeaderHeight - Parent.TitlePadding.Top - heightOfTitle - Parent.TitlePadding.Bottom - Parent.ContentPadding.Top - Parent.ContentPadding.Bottom - 1);
+                        widthOfContent, this.Height - Parent.TitlePadding.Top - heightOfTitle - Parent.TitlePadding.Bottom - Parent.ContentPadding.Top - Parent.ContentPadding.Bottom - 1);
                 }
             }
         }
@@ -221,16 +184,9 @@ namespace DemoApp
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void PopupNotifierForm_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (Parent.ShowCloseButton)
-            {
-                mouseOnClose = RectClose.Contains(e.X, e.Y);
-            }
-            if (Parent.ShowOptionsButton)
-            {
-                mouseOnOptions = RectOptions.Contains(e.X, e.Y);
-            }
-            mouseOnLink = RectContentText.Contains(e.X, e.Y);
+        {            
+            mouseOnClose = RectClose.Contains(e.X, e.Y);
+            mouseOnOptions = RectOptions.Contains(e.X, e.Y);
             Invalidate();
         }
 
@@ -246,11 +202,7 @@ namespace DemoApp
                 if (RectClose.Contains(e.X, e.Y) && (CloseClick != null))
                 {
                     CloseClick(this, EventArgs.Empty);
-                }
-                if (RectContentText.Contains(e.X, e.Y) && (LinkClick != null))
-                {
-                    LinkClick(this, EventArgs.Empty);
-                }
+                }                
                 if (RectOptions.Contains(e.X, e.Y) && (Parent.OptionsMenu != null))
                 {
                     if (ContextMenuOpened != null)
@@ -283,18 +235,11 @@ namespace DemoApp
         /// </summary>
         private void AllocateGDIObjects()
         {
-            rcBody = new Rectangle(0, 0, this.Width, this.Height);
-            rcHeader = new Rectangle(0, 0, this.Width, Parent.HeaderHeight);
-            rcForm = new Rectangle(0, 0, this.Width - 1, this.Height - 1);
-
-            brushBody = new LinearGradientBrush(rcBody, Parent.BodyColor, GetLighterColor(Parent.BodyColor), LinearGradientMode.Vertical);
-            brushHeader = new LinearGradientBrush(rcHeader, Parent.HeaderColor, GetDarkerColor(Parent.HeaderColor), LinearGradientMode.Vertical);
             brushButtonHover = new SolidBrush(Parent.ButtonHoverColor);
             penButtonBorder = new Pen(Parent.ButtonBorderColor);
             penContent = new Pen(Parent.ContentColor, 2);
             penBorder = new Pen(Parent.BorderColor);
             brushForeColor = new SolidBrush(ForeColor);
-            brushLinkHover = new SolidBrush(Parent.ContentHoverColor);
             brushContent = new SolidBrush(Parent.ContentColor);
             brushTitle = new SolidBrush(Parent.TitleColor);
 
@@ -309,13 +254,11 @@ namespace DemoApp
             if (gdiInitialized)
             {
                 brushBody.Dispose();
-                brushHeader.Dispose();
                 brushButtonHover.Dispose();
                 penButtonBorder.Dispose();
                 penContent.Dispose();
                 penBorder.Dispose();
                 brushForeColor.Dispose();
-                brushLinkHover.Dispose();
                 brushContent.Dispose();
                 brushTitle.Dispose();
             }
@@ -328,6 +271,10 @@ namespace DemoApp
         /// <param name="e"></param>
         private void PopupNotifierForm_Paint(object sender, PaintEventArgs e)
         {
+            rcBody = new Rectangle(0, 0, this.Width, this.Height);
+            rcForm = new Rectangle(0, 0, this.Width - 1, this.Height - 1);
+            brushBody = new LinearGradientBrush(rcBody, Parent.BodyColor, Parent.BodyColor, LinearGradientMode.Vertical);
+
             if (!gdiInitialized)
             {
                 AllocateGDIObjects();
@@ -335,31 +282,24 @@ namespace DemoApp
 
             // draw window
             e.Graphics.FillRectangle(brushBody, rcBody);
-            e.Graphics.FillRectangle(brushHeader, rcHeader);
             e.Graphics.DrawRectangle(penBorder, rcForm);
+            
+            if (mouseOnClose)
+            {
+                e.Graphics.FillRectangle(brushButtonHover, RectClose);
+                e.Graphics.DrawRectangle(penButtonBorder, RectClose);
+            }
+            e.Graphics.DrawLine(penContent, RectClose.Left + 4, RectClose.Top + 4, RectClose.Right - 4, RectClose.Bottom - 4);
+            e.Graphics.DrawLine(penContent, RectClose.Left + 4, RectClose.Bottom - 4, RectClose.Right - 4, RectClose.Top + 4);
            
-            if (Parent.ShowCloseButton)
+            if (mouseOnOptions)
             {
-                if (mouseOnClose)
-                {
-                    e.Graphics.FillRectangle(brushButtonHover, RectClose);
-                    e.Graphics.DrawRectangle(penButtonBorder, RectClose);
-                }
-                e.Graphics.DrawLine(penContent, RectClose.Left + 4, RectClose.Top + 4, RectClose.Right - 4, RectClose.Bottom - 4);
-                e.Graphics.DrawLine(penContent, RectClose.Left + 4, RectClose.Bottom - 4, RectClose.Right - 4, RectClose.Top + 4);
+                e.Graphics.FillRectangle(brushButtonHover, RectOptions);
+                e.Graphics.DrawRectangle(penButtonBorder, RectOptions);
             }
-            if (Parent.ShowOptionsButton)
-            {
-                if (mouseOnOptions)
-                {
-                    e.Graphics.FillRectangle(brushButtonHover, RectOptions);
-                    e.Graphics.DrawRectangle(penButtonBorder, RectOptions);
-                }
-                Rectangle myRectangle = new Rectangle(RectOptions.Left + 4, RectOptions.Top + 4, 11, 11);
+            Rectangle myRectangle = new Rectangle(RectOptions.Left + 4, RectOptions.Top + 4, 11, 11);
 
-                e.Graphics.DrawRectangle(penContent, myRectangle);
-                //e.Graphics.FillPolygon(brushForeColor, new Point[] { new Point(RectOptions.Left + 3, RectOptions.Top + 2), new Point(RectOptions.Right - 3, RectOptions.Top + 2), new Point(RectOptions.Right - 9, RectOptions.Top + 8) });
-            }
+            e.Graphics.DrawRectangle(penContent, myRectangle);
 
             // draw icon
             if (Parent.Image != null)
@@ -377,9 +317,8 @@ namespace DemoApp
 
             // draw title
             e.Graphics.DrawString(Parent.TitleText, Parent.TitleFont, brushTitle, titleX, Parent.TitlePadding.Top);
-  
+
             // draw content text, optionally with a bold part
-            this.Cursor = mouseOnLink ? Cursors.Hand : Cursors.Default;
             e.Graphics.DrawString(Parent.ContentText, Parent.ContentFont, brushContent, RectContentText);            
         }
 
