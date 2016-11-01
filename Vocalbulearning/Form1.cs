@@ -28,6 +28,7 @@ namespace Vocalbulearning
             this.Hide();
             this.WindowState = FormWindowState.Minimized;
             this.ShowInTaskbar = false;
+            LoadSetting();
         }
         private UtilsHelper utilsHelper = new UtilsHelper();
         private ConfigHelper configHelper = new ConfigHelper();
@@ -41,9 +42,7 @@ namespace Vocalbulearning
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            LoadSetting();
-            GetSetting();
-            
+            GetSetting();            
             try
             {
                 string jsonContent = string.Empty;
@@ -225,7 +224,6 @@ namespace Vocalbulearning
         {
             SetSetting();
             this.Hide();
-            this.WindowState = FormWindowState.Minimized;
             this.ShowInTaskbar = false;
             notifyIcon1.Visible = true;
             notifyIcon1.ShowBalloonTip(300);
@@ -234,7 +232,6 @@ namespace Vocalbulearning
         private void button2_Click(object sender, EventArgs e)
         {
             this.Hide();
-            this.WindowState = FormWindowState.Minimized;
             this.ShowInTaskbar = false;
             notifyIcon1.Visible = true;
             notifyIcon1.ShowBalloonTip(300);
