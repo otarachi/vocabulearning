@@ -160,18 +160,19 @@
             this.learntToolStripMenuItem,
             this.neverToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(147, 48);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(153, 70);
+            this.contextMenuStrip1.MouseEnter += new System.EventHandler(this.OptionsMenu_MouseEnter);
             // 
             // learntToolStripMenuItem
             // 
             this.learntToolStripMenuItem.Name = "learntToolStripMenuItem";
-            this.learntToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.learntToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.learntToolStripMenuItem.Text = "Learnt it";
             // 
             // neverToolStripMenuItem
             // 
             this.neverToolStripMenuItem.Name = "neverToolStripMenuItem";
-            this.neverToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.neverToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.neverToolStripMenuItem.Text = "Never show it";
             // 
             // label8
