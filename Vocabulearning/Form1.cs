@@ -40,6 +40,7 @@ namespace Vocabulearning
         private int totalMemorizedToday = 0;
         private int TryGetVocal = 0;
 
+        #region form event
         private void Form1_Load(object sender, EventArgs e)
         {
             GetSetting();            
@@ -108,6 +109,7 @@ namespace Vocabulearning
 
             SaveSetting();
         }
+        #endregion
 
         private void timer1_Tick(object sender, EventArgs e)
         {
@@ -254,7 +256,8 @@ namespace Vocabulearning
 
             popupNotifier1.Popup();
         }
-        
+
+        #region 
         private void LoadSetting()
         {
             appSetting.dict = configHelper.getStringAppSetting("dict", "dictVoval.txt");

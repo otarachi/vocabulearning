@@ -271,7 +271,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(200, 141);
+            this.button1.Location = new System.Drawing.Point(198, 141);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 28;
@@ -281,7 +281,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(281, 141);
+            this.button2.Location = new System.Drawing.Point(282, 141);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 29;
@@ -371,9 +371,9 @@
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(197, 120);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(58, 13);
+            this.label6.Size = new System.Drawing.Size(84, 13);
             this.label6.TabIndex = 32;
-            this.label6.Text = "Font Vocal";
+            this.label6.Text = "Font Vocabulary";
             // 
             // label9
             // 
@@ -437,7 +437,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.Name = "Form1";
-            this.Text = "Vocalbulearning Setting";
+            this.Text = "Vocabulearning Setting";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Shown += new System.EventHandler(this.Form1_Shown);
