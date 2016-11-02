@@ -174,6 +174,7 @@ namespace Vocabulearning
             System.Diagnostics.Debug.WriteLine("Main IsMouseEnter." + popupNotifier1.IsMouseEnter.ToString());
         }
 
+        #region Option click event
         private void SettingsToolStripMenuItem_Click(object sender, System.EventArgs e)
         {
             this.Show();
@@ -210,6 +211,7 @@ namespace Vocabulearning
             System.Diagnostics.Debug.WriteLine("LearntToolStripMenuItem_Click." + totalMemorizedToday.ToString());
             learntToolStripMenuItem.Enabled = false;
         }
+        #endregion
 
         private void txtTitle_Click(object sender, EventArgs e)
         {
@@ -257,7 +259,7 @@ namespace Vocabulearning
             popupNotifier1.Popup();
         }
 
-        #region 
+        #region Setting iteraction
         private void LoadSetting()
         {
             appSetting.dict = configHelper.getStringAppSetting("dict", "dictVoval.txt");
@@ -316,6 +318,6 @@ namespace Vocabulearning
             config.Save(ConfigurationSaveMode.Modified);
             ConfigurationManager.RefreshSection("appSettings");
         }
-
+        #endregion
     }
 }
