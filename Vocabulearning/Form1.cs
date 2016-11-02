@@ -198,6 +198,7 @@ namespace Vocabulearning
             totalMemorizedToday++;
             System.Diagnostics.Debug.WriteLine("NeverToolStripMenuItem_Click." + totalMemorizedToday.ToString());
             neverToolStripMenuItem.Enabled = false;
+            learntToolStripMenuItem.Enabled = false;
         }
 
         private void LearntToolStripMenuItem_Click(object sender, System.EventArgs e)
@@ -209,6 +210,7 @@ namespace Vocabulearning
             lstVocal[idx].p += (100 / appSetting.memorized);
             totalMemorizedToday++;
             System.Diagnostics.Debug.WriteLine("LearntToolStripMenuItem_Click." + totalMemorizedToday.ToString());
+            neverToolStripMenuItem.Enabled = false;
             learntToolStripMenuItem.Enabled = false;
         }
         #endregion
