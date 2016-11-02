@@ -7,7 +7,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace Vocalbulearning
+namespace Vocabulearning
 {
     static class Program
     {

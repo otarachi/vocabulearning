@@ -1,4 +1,4 @@
-﻿namespace Vocalbulearning
+﻿namespace Vocabulearning
 {
     partial class Form1
     {
@@ -60,7 +60,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
-            this.popupNotifier1 = new Vocalbulearning.PopupNotifier();
+            this.popupNotifier1 = new Vocabulearning.PopupNotifier();
             this.contextMenuStrip2.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtDelay)).BeginInit();

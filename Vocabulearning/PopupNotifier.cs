@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using System.Drawing;
 
-namespace Vocalbulearning
+namespace Vocabulearning
 {
     /// <summary>
     /// Non-visual component to show a notification window in the right lower

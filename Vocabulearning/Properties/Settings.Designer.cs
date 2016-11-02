@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Vocalbulearning.Properties {
+namespace Vocabulearning.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

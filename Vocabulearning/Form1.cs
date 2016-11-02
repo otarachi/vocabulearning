@@ -7,7 +7,7 @@ using System.Web.Script.Serialization;
 using System.Windows.Forms;
 using System.Linq;
 
-namespace Vocalbulearning
+namespace Vocabulearning
 {
     public partial class Form1 : Form
     {

@@ -3,7 +3,7 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
-namespace Vocalbulearning
+namespace Vocabulearning
 {
     /// <summary>
     /// This is the form of the actual notification window.
