@@ -245,6 +245,7 @@ namespace Vocabulearning
 
         private void showPopup(string title, string content)
         {
+            popupNotifier1.BorderColor = Color.White;
             popupNotifier1.TitleText = title;
             popupNotifier1.ContentText = content;
 

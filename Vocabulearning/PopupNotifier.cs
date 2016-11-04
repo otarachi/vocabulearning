@@ -281,8 +281,8 @@ namespace Vocabulearning
                     frmPopup.Height += heightOfContent - curHeightOfContent;
                 }
 
-                posStart = Screen.PrimaryScreen.WorkingArea.Bottom - frmPopup.Height;
-                posStop = Screen.PrimaryScreen.WorkingArea.Bottom - frmPopup.Height;
+                posStart = Screen.PrimaryScreen.WorkingArea.Bottom - frmPopup.Height - 20;
+                posStop = Screen.PrimaryScreen.WorkingArea.Bottom - frmPopup.Height - 20;
 
                 if (!frmPopup.Visible)
                 {       
@@ -290,7 +290,7 @@ namespace Vocabulearning
                     opacityStop = 1;
 
                     frmPopup.Opacity = opacityStart;
-                    frmPopup.Location = new Point(Screen.PrimaryScreen.WorkingArea.Right - frmPopup.Size.Width - 1, posStart);
+                    frmPopup.Location = new Point(Screen.PrimaryScreen.WorkingArea.Right - frmPopup.Size.Width - 1 - 20, posStart);
                     frmPopup.Visible = true;
                     isAppearing = true;
 
@@ -432,8 +432,8 @@ namespace Vocabulearning
 
                 if (isAppearing)
                 {                    
-                    posStart = Screen.PrimaryScreen.WorkingArea.Bottom - frmPopup.Height;
-                    posStop = Screen.PrimaryScreen.WorkingArea.Bottom - frmPopup.Height;
+                    posStart = Screen.PrimaryScreen.WorkingArea.Bottom - frmPopup.Height - 20;
+                    posStop = Screen.PrimaryScreen.WorkingArea.Bottom - frmPopup.Height - 20;
                     opacityStart = 1;
                     opacityStop = 0;
 
