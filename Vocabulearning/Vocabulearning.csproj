@@ -100,7 +100,9 @@
     <Content Include="dictVoval.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Icon.ico" />
+    <Content Include="Resources\Untitled1.png" />
+    <Content Include="Resources\Untitled2.png" />
+    <Content Include="Resources\Untitled3.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

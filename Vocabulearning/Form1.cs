@@ -17,8 +17,8 @@ namespace Vocabulearning
             // 
             // notifyIcon1
             // 
-            this.Icon = Properties.Resources.Icon;
-            this.notifyIcon1.Icon = Properties.Resources.Icon;
+            this.Icon = Properties.Resources.Untitled3;
+            this.notifyIcon1.Icon = Properties.Resources.Untitled3;
 
             this.settingsToolStripMenuItem.Click += SettingsToolStripMenuItem_Click;
             this.exitToolStripMenuItem.Click += ExitToolStripMenuItem_Click;
@@ -245,6 +245,8 @@ namespace Vocabulearning
 
         private void showPopup(string title, string content)
         {
+            popupNotifier1.ButtonHoverColor = Color.FromArgb(222, 67, 67);
+            popupNotifier1.ButtonBorderColor = Color.FromArgb(222, 67, 67);
             popupNotifier1.BorderColor = Color.White;
             popupNotifier1.TitleText = title;
             popupNotifier1.ContentText = content;

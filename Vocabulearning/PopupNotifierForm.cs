@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 
 namespace Vocabulearning
 {
@@ -56,6 +57,7 @@ namespace Vocabulearning
         private Brush brushButtonHover;
         private Pen penButtonBorder;
         private Pen penContent;
+        private Pen penHoverContent;
         private Pen penBorder;
         private Brush brushForeColor;
         private Brush brushContent;
@@ -167,7 +169,7 @@ namespace Vocabulearning
         /// </summary>
         private Rectangle RectClose
         {
-            get { return new Rectangle(this.Width - 19, 1, 18, 18); }
+            get { return new Rectangle(this.Width - 40, 0, 40, 22); }
         }
 
         /// <summary>
@@ -175,7 +177,7 @@ namespace Vocabulearning
         /// </summary>
         private Rectangle RectOptions
         {
-            get { return new Rectangle(this.Width - 19 - 19, 1, 18, 18); }
+            get { return new Rectangle(this.Width - 30, this.Height - 28, 24, 24); }
         }
 
         /// <summary>
@@ -238,6 +240,7 @@ namespace Vocabulearning
             brushButtonHover = new SolidBrush(Parent.ButtonHoverColor);
             penButtonBorder = new Pen(Parent.ButtonBorderColor);
             penContent = new Pen(Parent.ContentColor, 2);
+            penHoverContent = new Pen(Color.White, 2);
             penBorder = new Pen(Parent.BorderColor);
             brushForeColor = new SolidBrush(ForeColor);
             brushContent = new SolidBrush(Parent.ContentColor);
@@ -257,6 +260,7 @@ namespace Vocabulearning
                 brushButtonHover.Dispose();
                 penButtonBorder.Dispose();
                 penContent.Dispose();
+                penHoverContent.Dispose();
                 penBorder.Dispose();
                 brushForeColor.Dispose();
                 brushContent.Dispose();
@@ -288,19 +292,27 @@ namespace Vocabulearning
             {
                 e.Graphics.FillRectangle(brushButtonHover, RectClose);
                 e.Graphics.DrawRectangle(penButtonBorder, RectClose);
+
+                e.Graphics.DrawLine(penHoverContent, RectClose.Left + 16, RectClose.Top + 7, RectClose.Right - 16, RectClose.Bottom - 7);
+                e.Graphics.DrawLine(penHoverContent, RectClose.Left + 16, RectClose.Bottom - 7, RectClose.Right - 16, RectClose.Top + 7);
             }
-            e.Graphics.DrawLine(penContent, RectClose.Left + 4, RectClose.Top + 4, RectClose.Right - 4, RectClose.Bottom - 4);
-            e.Graphics.DrawLine(penContent, RectClose.Left + 4, RectClose.Bottom - 4, RectClose.Right - 4, RectClose.Top + 4);
-           
+            else
+            {
+                e.Graphics.DrawLine(penContent, RectClose.Left + 16, RectClose.Top + 7, RectClose.Right - 16, RectClose.Bottom - 7);
+                e.Graphics.DrawLine(penContent, RectClose.Left + 16, RectClose.Bottom - 7, RectClose.Right - 16, RectClose.Top + 7);
+            }
             if (mouseOnOptions)
             {
-                e.Graphics.FillRectangle(brushButtonHover, RectOptions);
-                e.Graphics.DrawRectangle(penButtonBorder, RectOptions);
+                //e.Graphics.FillRectangle(brushButtonHover, RectOptions);
+                //e.Graphics.DrawRectangle(penButtonBorder, RectOptions);
+                Image seeOption = Properties.Resources.Untitled1;
+                e.Graphics.DrawImage(seeOption, RectOptions.Right - 24, RectOptions.Bottom - 24, 24, 24);
             }
-            Rectangle myRectangle = new Rectangle(RectOptions.Left + 4, RectOptions.Top + 4, 11, 11);
-
-            e.Graphics.DrawRectangle(penContent, myRectangle);
-
+            else
+            {
+                Image seeOption = Properties.Resources.Untitled2;
+                e.Graphics.DrawImage(seeOption, RectOptions.Right - 24, RectOptions.Bottom - 24, 24, 24);
+            }
             // draw icon
             if (Parent.Image != null)
             {
