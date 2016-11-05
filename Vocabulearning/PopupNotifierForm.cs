@@ -47,6 +47,7 @@ namespace Vocabulearning
         private bool mouseOnOptions = false;
         private int heightOfTitle;
         private int widthOfContent;
+        private Random rand = new Random();
 
         #region GDI objects
 
@@ -58,6 +59,8 @@ namespace Vocabulearning
         private Pen penButtonBorder;
         private Pen penContent;
         private Pen penHoverContent;
+        private Pen penOption;
+        private Pen penHoverOption;
         private Pen penBorder;
         private Brush brushForeColor;
         private Brush brushContent;
@@ -177,7 +180,7 @@ namespace Vocabulearning
         /// </summary>
         private Rectangle RectOptions
         {
-            get { return new Rectangle(this.Width - 30, this.Height - 28, 24, 24); }
+            get { return new Rectangle(this.Width - 25, this.Height - 25, 12, 12); }
         }
 
         /// <summary>
@@ -239,8 +242,11 @@ namespace Vocabulearning
         {
             brushButtonHover = new SolidBrush(Parent.ButtonHoverColor);
             penButtonBorder = new Pen(Parent.ButtonBorderColor);
-            penContent = new Pen(Parent.ContentColor, 2);
+            penContent = new Pen(Color.FromArgb(100, 100, 100), 2);
             penHoverContent = new Pen(Color.White, 2);
+            penOption = new Pen(Color.FromArgb(100, 100, 100), 2);
+            penHoverOption = new Pen(Parent.ContentColor, 2);
+
             penBorder = new Pen(Parent.BorderColor);
             brushForeColor = new SolidBrush(ForeColor);
             brushContent = new SolidBrush(Parent.ContentColor);
@@ -261,6 +267,8 @@ namespace Vocabulearning
                 penButtonBorder.Dispose();
                 penContent.Dispose();
                 penHoverContent.Dispose();
+                penOption.Dispose();
+                penHoverOption.Dispose();
                 penBorder.Dispose();
                 brushForeColor.Dispose();
                 brushContent.Dispose();
@@ -303,16 +311,18 @@ namespace Vocabulearning
             }
             if (mouseOnOptions)
             {
-                //e.Graphics.FillRectangle(brushButtonHover, RectOptions);
-                //e.Graphics.DrawRectangle(penButtonBorder, RectOptions);
-                Image seeOption = Properties.Resources.Untitled1;
-                e.Graphics.DrawImage(seeOption, RectOptions.Right - 24, RectOptions.Bottom - 24, 24, 24);
+                e.Graphics.DrawLine(penHoverOption, RectOptions.Left + rand.Next(4), RectOptions.Top + 2, RectOptions.Right - rand.Next(4), RectOptions.Top + 2);
+                e.Graphics.DrawLine(penHoverOption, RectOptions.Left + rand.Next(4), RectOptions.Top + 6, RectOptions.Right - rand.Next(4), RectOptions.Top + 6);
+                e.Graphics.DrawLine(penHoverOption, RectOptions.Left + rand.Next(4), RectOptions.Top + 10, RectOptions.Right - rand.Next(4), RectOptions.Top + 10);
             }
             else
             {
-                Image seeOption = Properties.Resources.Untitled2;
-                e.Graphics.DrawImage(seeOption, RectOptions.Right - 24, RectOptions.Bottom - 24, 24, 24);
+                e.Graphics.DrawLine(penOption, RectOptions.Left + rand.Next(4), RectOptions.Top, RectOptions.Right - rand.Next(4), RectOptions.Top);
+                e.Graphics.DrawLine(penOption, RectOptions.Left + rand.Next(4), RectOptions.Top + 4, RectOptions.Right - rand.Next(4), RectOptions.Top + 4);
+                e.Graphics.DrawLine(penOption, RectOptions.Left + rand.Next(4), RectOptions.Top + 8, RectOptions.Right - rand.Next(4), RectOptions.Top + 8);
+                e.Graphics.DrawLine(penOption, RectOptions.Left + rand.Next(4), RectOptions.Top + 12, RectOptions.Right - rand.Next(4), RectOptions.Top + 12);
             }
+
             // draw icon
             if (Parent.Image != null)
             {
