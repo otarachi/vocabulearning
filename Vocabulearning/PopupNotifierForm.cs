@@ -180,7 +180,7 @@ namespace Vocabulearning
         /// </summary>
         private Rectangle RectOptions
         {
-            get { return new Rectangle(this.Width - 25, this.Height - 25, 12, 12); }
+            get { return new Rectangle(this.Width - 25, this.Height - 25, 12, 14); }
         }
 
         /// <summary>
@@ -311,7 +311,6 @@ namespace Vocabulearning
             }
             if (mouseOnOptions)
             {
-                e.Graphics.DrawRectangle(penHoverContent, RectOptions);                
                 e.Graphics.DrawLine(penHoverOption, RectOptions.Left + rand.Next(4), RectOptions.Top + 2, RectOptions.Right - rand.Next(4), RectOptions.Top + 2);
                 e.Graphics.DrawLine(penHoverOption, RectOptions.Left + rand.Next(4), RectOptions.Top + 6, RectOptions.Right - rand.Next(4), RectOptions.Top + 6);
                 e.Graphics.DrawLine(penHoverOption, RectOptions.Left + rand.Next(4), RectOptions.Top + 10, RectOptions.Right - rand.Next(4), RectOptions.Top + 10);
