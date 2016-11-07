@@ -150,7 +150,7 @@ namespace Vocabulearning
             {
                 if (Parent.Image != null)
                 {
-                    widthOfContent = this.Width - Parent.ImagePadding.Left - Parent.ImageSize.Width - Parent.ImagePadding.Right - Parent.ContentPadding.Left - Parent.ContentPadding.Right - 16 - 5;
+                    widthOfContent = this.Width - Parent.ImagePadding.Left - Parent.ImageSize.Width - Parent.ImagePadding.Right - Parent.ContentPadding.Left - Parent.ContentPadding.Right - 40 + 10;
                     return new RectangleF(
                         Parent.ImagePadding.Left + Parent.ImageSize.Width + Parent.ImagePadding.Right + Parent.ContentPadding.Left,
                         heightOfTitle + Parent.TitlePadding.Bottom + Parent.ContentPadding.Top,
@@ -158,7 +158,7 @@ namespace Vocabulearning
                 }
                 else
                 {
-                    widthOfContent = this.Width - Parent.ContentPadding.Left - Parent.ContentPadding.Right - 16 - 5;
+                    widthOfContent = this.Width - Parent.ContentPadding.Left - Parent.ContentPadding.Right - 40 + 10;
                     return new RectangleF(
                         25 + Parent.ContentPadding.Left,
                         heightOfTitle + Parent.TitlePadding.Bottom + Parent.ContentPadding.Top,

@@ -251,7 +251,11 @@ namespace Vocabulearning
             popupNotifier1.TitleText = title;
             popupNotifier1.ContentText = content;
 
-            popupNotifier1.Delay = appSetting.delay;
+            if(appSetting.delay > appSetting.repeat)
+                popupNotifier1.Delay = appSetting.repeat - appSetting.aDuration - appSetting.aInterval;
+            else
+                popupNotifier1.Delay = appSetting.delay;
+
             popupNotifier1.AnimationInterval = appSetting.aInterval;
             popupNotifier1.AnimationDuration = appSetting.aDuration;
 

@@ -256,31 +256,34 @@ namespace Vocabulearning
                 int curWidthOfContent;
                 if (Image != null)
                 {
-                    curWidthOfContent = frmPopup.Width - ImagePadding.Left - ImageSize.Width - ImagePadding.Right - ContentPadding.Left - ContentPadding.Right - 16 - 5;
+                    curWidthOfContent = frmPopup.Width - ImagePadding.Left - ImageSize.Width - ImagePadding.Right - ContentPadding.Left - ContentPadding.Right - 40;
                 }
                 else
                 {
-                    curWidthOfContent = frmPopup.Width - ContentPadding.Left - ContentPadding.Right - 16 - 5;
+                    curWidthOfContent = frmPopup.Width - ContentPadding.Left - ContentPadding.Right - 40;
                 }
-
+                
                 //TODO: Tính chiều rộng của title
                 SizeF sizeTitle;
                 using (Graphics g = Graphics.FromHwnd(IntPtr.Zero))
                 {
                     sizeTitle = g.MeasureString(TitleText, TitleFont);
                 }                
-                int widthOfContent = (int)sizeTitle.Width;
+                int widthOfContent = (int)sizeTitle.Width + 5;
                 if (widthOfContent > curWidthOfContent)
                 {
                     frmPopup.Width += widthOfContent - curWidthOfContent;
-                    curWidthOfContent = widthOfContent;
+                    curWidthOfContent = widthOfContent;                    
                 }
-
+                curWidthOfContent += 10;
                 int heightOfContent;
                 using (Graphics g = Graphics.FromHwnd(IntPtr.Zero))
                 {
                     heightOfContent = (int)g.MeasureString(ContentText, ContentFont, curWidthOfContent).Height;
                 }
+
+                System.Diagnostics.Debug.WriteLine("Animation started. CWidth: " + curWidthOfContent);
+                System.Diagnostics.Debug.WriteLine("Animation started. CHeight: " + heightOfContent);
 
                 int heightOfTitle;
                 using (Graphics g = Graphics.FromHwnd(IntPtr.Zero))
@@ -292,7 +295,7 @@ namespace Vocabulearning
 
                 if (heightOfContent > curHeightOfContent)
                 {
-                    frmPopup.Height += heightOfContent - curHeightOfContent;
+                    frmPopup.Height += heightOfContent - curHeightOfContent + 9;
                 }
 
                 posStart = Screen.PrimaryScreen.WorkingArea.Bottom - frmPopup.Height - 20;
@@ -304,7 +307,7 @@ namespace Vocabulearning
                     opacityStop = 1;
 
                     frmPopup.Opacity = opacityStart;
-                    frmPopup.Location = new Point(Screen.PrimaryScreen.WorkingArea.Right - frmPopup.Size.Width - 20, posStart);
+                    frmPopup.Location = new Point(Screen.PrimaryScreen.WorkingArea.Right - frmPopup.Width - 20, posStart);
                     frmPopup.Visible = true;
                     isAppearing = true;
 
@@ -314,6 +317,8 @@ namespace Vocabulearning
                     tmrAnimation.Start();
                     sw = System.Diagnostics.Stopwatch.StartNew();
                     System.Diagnostics.Debug.WriteLine("Animation started.");
+                    System.Diagnostics.Debug.WriteLine("Animation started. Width: " + frmPopup.Size.Width);
+                    System.Diagnostics.Debug.WriteLine("Animation started. Height: " + frmPopup.Size.Height);
                 }
                 else
                 {
