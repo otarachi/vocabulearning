@@ -242,9 +242,9 @@ namespace Vocabulearning
         {
             brushButtonHover = new SolidBrush(Parent.ButtonHoverColor);
             penButtonBorder = new Pen(Parent.ButtonBorderColor);
-            penContent = new Pen(Color.FromArgb(100, 100, 100), 2);
+            penContent = new Pen(Color.FromArgb(140, 140, 140), 2);
             penHoverContent = new Pen(Color.White, 2);
-            penOption = new Pen(Color.FromArgb(100, 100, 100), 2);
+            penOption = new Pen(Color.FromArgb(140, 140, 140), 2);
             penHoverOption = new Pen(Parent.ContentColor, 2);
 
             penBorder = new Pen(Parent.BorderColor);
@@ -311,6 +311,7 @@ namespace Vocabulearning
             }
             if (mouseOnOptions)
             {
+                e.Graphics.DrawRectangle(penHoverContent, RectOptions);                
                 e.Graphics.DrawLine(penHoverOption, RectOptions.Left + rand.Next(4), RectOptions.Top + 2, RectOptions.Right - rand.Next(4), RectOptions.Top + 2);
                 e.Graphics.DrawLine(penHoverOption, RectOptions.Left + rand.Next(4), RectOptions.Top + 6, RectOptions.Right - rand.Next(4), RectOptions.Top + 6);
                 e.Graphics.DrawLine(penHoverOption, RectOptions.Left + rand.Next(4), RectOptions.Top + 10, RectOptions.Right - rand.Next(4), RectOptions.Top + 10);

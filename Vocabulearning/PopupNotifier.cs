@@ -252,26 +252,40 @@ namespace Vocabulearning
             if (!disposed)
             {
                 frmPopup.Size = Size;
-                int widthOfContent;
+                
+                int curWidthOfContent;
                 if (Image != null)
                 {
-                    widthOfContent = frmPopup.Width - ImagePadding.Left - ImageSize.Width - ImagePadding.Right - ContentPadding.Left - ContentPadding.Right - 16 - 5;
+                    curWidthOfContent = frmPopup.Width - ImagePadding.Left - ImageSize.Width - ImagePadding.Right - ContentPadding.Left - ContentPadding.Right - 16 - 5;
                 }
                 else
                 {
-                    widthOfContent = frmPopup.Width - ContentPadding.Left - ContentPadding.Right - 16 - 5;
+                    curWidthOfContent = frmPopup.Width - ContentPadding.Left - ContentPadding.Right - 16 - 5;
+                }
+
+                //TODO: Tính chiều rộng của title
+                SizeF sizeTitle;
+                using (Graphics g = Graphics.FromHwnd(IntPtr.Zero))
+                {
+                    sizeTitle = g.MeasureString(TitleText, TitleFont);
+                }                
+                int widthOfContent = (int)sizeTitle.Width;
+                if (widthOfContent > curWidthOfContent)
+                {
+                    frmPopup.Width += widthOfContent - curWidthOfContent;
+                    curWidthOfContent = widthOfContent;
                 }
 
                 int heightOfContent;
                 using (Graphics g = Graphics.FromHwnd(IntPtr.Zero))
                 {
-                    heightOfContent = (int)g.MeasureString(ContentText, ContentFont, widthOfContent).Height;
+                    heightOfContent = (int)g.MeasureString(ContentText, ContentFont, curWidthOfContent).Height;
                 }
 
                 int heightOfTitle;
                 using (Graphics g = Graphics.FromHwnd(IntPtr.Zero))
                 {
-                    heightOfTitle = (int)g.MeasureString("A", TitleFont).Height;
+                    heightOfTitle = (int)sizeTitle.Height;
                 }
 
                 int curHeightOfContent = frmPopup.Height - TitlePadding.Top - heightOfTitle - TitlePadding.Bottom - ContentPadding.Top - ContentPadding.Bottom - 1;
@@ -290,7 +304,7 @@ namespace Vocabulearning
                     opacityStop = 1;
 
                     frmPopup.Opacity = opacityStart;
-                    frmPopup.Location = new Point(Screen.PrimaryScreen.WorkingArea.Right - frmPopup.Size.Width - 1 - 20, posStart);
+                    frmPopup.Location = new Point(Screen.PrimaryScreen.WorkingArea.Right - frmPopup.Size.Width - 20, posStart);
                     frmPopup.Visible = true;
                     isAppearing = true;
 
