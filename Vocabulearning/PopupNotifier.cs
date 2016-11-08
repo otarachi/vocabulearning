@@ -207,7 +207,7 @@ namespace Vocabulearning
         public PopupNotifier()
         {
             // set default values
-            BodyColor = SystemColors.Control;
+            //BodyColor = SystemColors.Control;
             TitleColor = SystemColors.ControlText;
             ContentColor = SystemColors.ControlText;
             BorderColor = SystemColors.WindowFrame;
@@ -256,7 +256,7 @@ namespace Vocabulearning
                 int curWidthOfContent;
                 if (Image != null)
                 {
-                    curWidthOfContent = frmPopup.Width - ImagePadding.Left - ImageSize.Width - ImagePadding.Right - ContentPadding.Left - ContentPadding.Right - 40;
+                    curWidthOfContent = frmPopup.Width - ImagePadding.Left - ImageSize.Width - ImagePadding.Right - ContentPadding.Left - ContentPadding.Right - 40 - 15;
                 }
                 else
                 {

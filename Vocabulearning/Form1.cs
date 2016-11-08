@@ -30,6 +30,24 @@ namespace Vocabulearning
             this.ShowInTaskbar = false;
             LoadSetting();
         }
+        private List<Bitmap> randomImage
+        {
+            get
+            {
+                return new List<Bitmap>()
+                {
+                    Properties.Resources._1,
+                    Properties.Resources._2,
+                    Properties.Resources._3,
+                    Properties.Resources._4,
+                    Properties.Resources._5,
+                    Properties.Resources._6,
+                    Properties.Resources._7,
+                    Properties.Resources._8,
+                    Properties.Resources._9
+                };
+            }
+        }
         private UtilsHelper utilsHelper = new UtilsHelper();
         private ConfigHelper configHelper = new ConfigHelper();
         
@@ -259,7 +277,7 @@ namespace Vocabulearning
             popupNotifier1.AnimationInterval = appSetting.aInterval;
             popupNotifier1.AnimationDuration = appSetting.aDuration;
 
-            popupNotifier1.Image = Properties.Resources._157_GetPermission_48x48_72;
+            popupNotifier1.Image = randomImage[new Random().Next(0, 9)];            
 
             popupNotifier1.Size = new System.Drawing.Size(appSetting.width, appSetting.height);
             this.popupNotifier1.ContentFont = new System.Drawing.Font("Segoe UI", appSetting.fontContent);

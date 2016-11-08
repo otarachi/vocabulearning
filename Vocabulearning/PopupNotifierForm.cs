@@ -78,6 +78,9 @@ namespace Vocabulearning
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
             this.SetStyle(ControlStyles.ResizeRedraw, true);
             this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+            this.SetStyle(ControlStyles.SupportsTransparentBackColor, true);
+            this.BackColor = Color.LimeGreen;
+            this.TransparencyKey = BackColor;
             this.ShowInTaskbar = false;
 
             this.VisibleChanged += new EventHandler(PopupNotifierForm_VisibleChanged);
@@ -106,9 +109,13 @@ namespace Vocabulearning
         private void InitializeComponent()
         {
             this.SuspendLayout();
+            // 
+            // PopupNotifierForm
+            // 
             this.ClientSize = new System.Drawing.Size(392, 66);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "PopupNotifierForm";
+            this.Opacity = 0D;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.TopMost = true;
             this.ResumeLayout(false);
@@ -152,7 +159,7 @@ namespace Vocabulearning
                 {
                     widthOfContent = this.Width - Parent.ImagePadding.Left - Parent.ImageSize.Width - Parent.ImagePadding.Right - Parent.ContentPadding.Left - Parent.ContentPadding.Right - 40 + 10;
                     return new RectangleF(
-                        Parent.ImagePadding.Left + Parent.ImageSize.Width + Parent.ImagePadding.Right + Parent.ContentPadding.Left,
+                        Parent.ImagePadding.Left + Parent.ImageSize.Width + Parent.ImagePadding.Right + Parent.ContentPadding.Left + 15,
                         heightOfTitle + Parent.TitlePadding.Bottom + Parent.ContentPadding.Top,
                         widthOfContent, this.Height - Parent.TitlePadding.Top - heightOfTitle - Parent.TitlePadding.Bottom - Parent.ContentPadding.Top - Parent.ContentPadding.Bottom - 1);
                 }
@@ -283,8 +290,8 @@ namespace Vocabulearning
         /// <param name="e"></param>
         private void PopupNotifierForm_Paint(object sender, PaintEventArgs e)
         {
-            rcBody = new Rectangle(0, 0, this.Width, this.Height);
-            rcForm = new Rectangle(0, 0, this.Width - 1, this.Height - 1);
+            rcBody = new Rectangle(29, 0, this.Width, this.Height);
+            rcForm = new Rectangle(29, 0, this.Width - 30, this.Height - 1);
             brushBody = new LinearGradientBrush(rcBody, Parent.BodyColor, Parent.BodyColor, LinearGradientMode.Vertical);
 
             if (!gdiInitialized)
@@ -293,7 +300,8 @@ namespace Vocabulearning
             }
 
             // draw window
-            e.Graphics.FillRectangle(brushBody, rcBody);
+            //e.Graphics.FillRectangle(brushBody, rcBody);            
+            e.Graphics.FillRectangle(Brushes.White, rcBody);
             e.Graphics.DrawRectangle(penBorder, rcForm);
             
             if (mouseOnClose)
@@ -326,7 +334,13 @@ namespace Vocabulearning
             // draw icon
             if (Parent.Image != null)
             {
-                e.Graphics.DrawImage(Parent.Image, Parent.ImagePadding.Left + 1, 1 + Parent.ImagePadding.Top, Parent.ImageSize.Width, Parent.ImageSize.Height);
+                int idxBackImage = (this.Height - 58) / 2;
+
+                e.Graphics.FillEllipse(Brushes.White, new Rectangle(Parent.ImagePadding.Left, idxBackImage, 58, 58));
+                e.Graphics.DrawEllipse(penBorder, new Rectangle(Parent.ImagePadding.Left, idxBackImage, 58, 58));
+                e.Graphics.FillRectangle(Brushes.White, new Rectangle(Parent.ImagePadding.Left + 29, idxBackImage, 30, 59));
+
+                e.Graphics.DrawImage(Parent.Image, Parent.ImagePadding.Left + 5, idxBackImage + 5, Parent.ImageSize.Width, Parent.ImageSize.Height);
             }
 
             // calculate height of title
@@ -334,7 +348,7 @@ namespace Vocabulearning
             int titleX = Parent.TitlePadding.Left + 25;
             if (Parent.Image != null)
             {
-                titleX += Parent.ImagePadding.Left + Parent.ImageSize.Width + Parent.ImagePadding.Right - 25;
+                titleX += Parent.ImagePadding.Left + Parent.ImageSize.Width + Parent.ImagePadding.Right - 25 + 15;
             }
 
             // draw title

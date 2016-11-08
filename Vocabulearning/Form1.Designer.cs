@@ -406,7 +406,7 @@
             // 
             // popupNotifier1
             // 
-            this.popupNotifier1.BodyColor = System.Drawing.Color.White;
+            this.popupNotifier1.BodyColor = System.Drawing.Color.Transparent;
             this.popupNotifier1.ButtonHoverColor = System.Drawing.Color.White;
             this.popupNotifier1.ContentFont = new System.Drawing.Font("Segoe UI", 10F);
             this.popupNotifier1.ContentText = null;
