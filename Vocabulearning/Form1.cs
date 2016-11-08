@@ -247,7 +247,7 @@ namespace Vocabulearning
         {
             popupNotifier1.ButtonHoverColor = Color.FromArgb(222, 67, 67);
             popupNotifier1.ButtonBorderColor = Color.FromArgb(222, 67, 67);
-            popupNotifier1.BorderColor = Color.White;
+            popupNotifier1.BorderColor = Color.FromArgb(140, 140, 140);
             popupNotifier1.TitleText = title;
             popupNotifier1.ContentText = content;
 
