@@ -299,6 +299,7 @@ namespace Vocabulearning
                 AllocateGDIObjects();
             }
 
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
             // draw window
             //e.Graphics.FillRectangle(brushBody, rcBody);            
             e.Graphics.FillRectangle(Brushes.White, rcBody);
@@ -331,6 +332,7 @@ namespace Vocabulearning
                 e.Graphics.DrawLine(penOption, RectOptions.Left + rand.Next(4), RectOptions.Top + 12, RectOptions.Right - rand.Next(4), RectOptions.Top + 12);
             }
 
+            e.Graphics.SmoothingMode = SmoothingMode.None;
             // draw icon
             if (Parent.Image != null)
             {
@@ -338,9 +340,9 @@ namespace Vocabulearning
 
                 e.Graphics.FillEllipse(Brushes.White, new Rectangle(Parent.ImagePadding.Left, idxBackImage, 58, 58));
                 e.Graphics.DrawEllipse(penBorder, new Rectangle(Parent.ImagePadding.Left, idxBackImage, 58, 58));
-                e.Graphics.FillRectangle(Brushes.White, new Rectangle(Parent.ImagePadding.Left + 29, idxBackImage, 30, 59));
+                e.Graphics.FillRectangle(Brushes.White, new Rectangle(Parent.ImagePadding.Left + 30, idxBackImage, 30, 59));
 
-                e.Graphics.DrawImage(Parent.Image, Parent.ImagePadding.Left + 5, idxBackImage + 5, Parent.ImageSize.Width, Parent.ImageSize.Height);
+                e.Graphics.DrawImage(Parent.Image, Parent.ImagePadding.Left + 5, idxBackImage + 5, 48, 48);
             }
 
             // calculate height of title

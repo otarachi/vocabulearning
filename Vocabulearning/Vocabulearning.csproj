@@ -100,9 +100,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\157_GetPermission_48x48_72.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="dictVoval.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
